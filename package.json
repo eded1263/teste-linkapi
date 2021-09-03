@@ -8,7 +8,9 @@
   "dependencies": {
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1"
+    "eslint-plugin-prettier": "^4.0.0",
+    "express": "^4.17.1",
+    "pipedrive": "^11.0.0"
   },
   "scripts": {
     "dev": "nodemon --exec babel-node index.js"
@@ -16,6 +18,10 @@
   "devDependencies": {
     "@babel/core": "^7.15.4",
     "@babel/node": "^7.15.4",
-    "@babel/preset-env": "^7.15.4"
+    "@babel/preset-env": "^7.15.4",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "prettier": "2.3.2"
   }
 }

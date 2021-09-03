@@ -1,1 +1,2 @@
-// code goes here
+import "./src/config/dotenv";
+// code goes heres
