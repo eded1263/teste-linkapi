@@ -4,5 +4,18 @@
   "description": "test for LinkApi",
   "main": "index.js",
   "repository": "https://github.com/eded1263/teste-linkapi.git",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1"
+  },
+  "scripts": {
+    "dev": "nodemon --exec babel-node index.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.4",
+    "@babel/node": "^7.15.4",
+    "@babel/preset-env": "^7.15.4"
+  }
 }
