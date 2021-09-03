@@ -1,0 +1,8 @@
+{
+  "name": "bling-pipedrive-integration",
+  "version": "1.0.0",
+  "description": "test for LinkApi",
+  "main": "index.js",
+  "repository": "https://github.com/eded1263/teste-linkapi.git",
+  "license": "MIT"
+}
