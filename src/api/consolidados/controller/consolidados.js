@@ -2,7 +2,6 @@ import { Router } from "express";
 import { pipedriveService } from "~/src/services/pipedrive";
 import { ConsolidadoModel } from "../../../models/consolidado.model";
 import { blingService } from "../../../services/bling";
-import { dateFormat } from "../../../utils/dateFormat";
 import { orderParser } from "../../../utils/orderParser";
 class ConsolidadosController {
   router = Router();
@@ -17,26 +16,54 @@ class ConsolidadosController {
   }
 
   async getConsolidados(_req, res) {
-    const orders = await ConsolidadoModel.aggregate([
-      {
-        $group: { _id: "$data" },
-      },
-    ]);
+    const orders = await ConsolidadoModel.find();
     res.json(orders);
   }
 
   async postConsolidados(_req, res) {
-    const deals = await pipedriveService.getAllWonDeals();
+    let deals;
+    try {
+      deals = await pipedriveService.getAllWonDeals();
+    } catch (e) {
+      res.status(500).json({
+        status: 500,
+        message: "Erro ao buscar por negócios ganhos",
+        success: false,
+      });
+      return;
+    }
     const orders = orderParser(deals);
+    let dates = [];
     await Promise.all(
       orders.map(async (order) => {
         const { data } = await blingService.saveOrder(JSON.stringify(order));
         if (!data.retorno.erros) {
-          await ConsolidadoModel.create(order.pedido);
+          const index = dates.findIndex((d) => d.data === order.pedido.data);
+          if (index > 0) {
+            dates[index] = {
+              ...dates[index],
+              total_vendas:
+                dates[index].total_vendas + order.pedido.itens.item.vlr_unit,
+            };
+            return;
+          }
+          dates = [
+            ...dates,
+            {
+              data: order.pedido.data,
+              total_vendas: order.pedido.itens.item.vlr_unit,
+            },
+          ];
+          return;
         }
       })
     );
-    res.json(deals);
+    await Promise.all(
+      dates.map(async (d) => {
+        await ConsolidadoModel.updateMany(d, d, { upsert: true });
+      })
+    );
+    res.json({ success: true });
   }
 }
 
