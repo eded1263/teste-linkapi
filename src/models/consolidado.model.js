@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-const consolidadoSchema = new mongoose.Schema({
+const saleSchema = new mongoose.Schema({
   data: "string",
-  total_vendas: "number",
+  total_sales: "number",
 });
 
-const ConsolidadoModel = mongoose.model("Consolidado", consolidadoSchema);
+const SalesModel = mongoose.model("Consolidado", saleSchema);
 
-export { ConsolidadoModel };
+export { SalesModel };

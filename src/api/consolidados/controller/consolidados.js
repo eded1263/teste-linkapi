@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { pipedriveService } from "~/src/services/pipedrive";
-import { ConsolidadoModel } from "../../../models/consolidado.model";
+import { SalesModel } from "../../../models/consolidado.model";
 import { blingService } from "../../../services/bling";
 import { orderParser } from "../../../utils/orderParser";
 class ConsolidadosController {
@@ -16,7 +16,7 @@ class ConsolidadosController {
   }
 
   async getConsolidados(_req, res) {
-    const orders = await ConsolidadoModel.find();
+    const orders = await SalesModel.find();
     res.json(orders);
   }
 
@@ -39,11 +39,11 @@ class ConsolidadosController {
         const { data } = await blingService.saveOrder(JSON.stringify(order));
         if (!data.retorno.erros) {
           const index = dates.findIndex((d) => d.data === order.pedido.data);
-          if (index > 0) {
+          if (index >= 0) {
             dates[index] = {
-              ...dates[index],
-              total_vendas:
-                dates[index].total_vendas + order.pedido.itens.item.vlr_unit,
+              data: order.pedido.data,
+              total_sales:
+                dates[index].total_sales + order.pedido.itens.item.vlr_unit,
             };
             return;
           }
@@ -51,18 +51,30 @@ class ConsolidadosController {
             ...dates,
             {
               data: order.pedido.data,
-              total_vendas: order.pedido.itens.item.vlr_unit,
+              total_sales: order.pedido.itens.item.vlr_unit,
             },
           ];
-          return;
         }
       })
     );
     await Promise.all(
       dates.map(async (d) => {
-        await ConsolidadoModel.updateMany(d, d, { upsert: true });
+        const sale = await SalesModel.findOne({ data: d.data }).exec();
+        if (sale) {
+          await SalesModel.updateOne(
+            { data: d.data },
+            { total_sales: sale.total_sales + d.total_sales }
+          );
+          return;
+        }
+        await SalesModel.updateOne(
+          { data: d.data },
+          { total_sales: d.total_sales },
+          { upsert: true }
+        );
       })
     );
+
     res.json({ success: true });
   }
 }
