@@ -1,3 +1,5 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import "./config/dotenv";
 import mongoose from "mongoose";
 import { App } from "./App";
