@@ -67,11 +67,11 @@ class ConsolidadosController {
           );
           return;
         }
-        await SalesModel.updateOne(
-          { data: d.data },
-          { total_sales: d.total_sales },
-          { upsert: true }
-        );
+        const saleObj = new SalesModel({
+          data: d.data,
+          total_sales: d.total_sales,
+        });
+        await saleObj.save();
       })
     );
 
