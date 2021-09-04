@@ -1,11 +1,16 @@
 import express from "express";
-
+import morgan from "morgan";
 export class App {
   app = express();
 
   constructor(controllers) {
+    this.initializeMiddlewares();
     this.initializeControllers(controllers);
     this.notFoundMiddleware();
+  }
+
+  initializeMiddlewares() {
+    this.app.use(morgan("dev"));
   }
 
   initializeControllers(controllers) {

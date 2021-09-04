@@ -1,11 +1,15 @@
-import "./src/config/dotenv";
-import { client } from "./src/config/mongodb";
-import { App } from "./src/App";
+import "./config/dotenv";
+import mongoose from "mongoose";
+import { App } from "./App";
 import { createServer } from "http";
-import { consolidadosController } from "./src/api/consolidados/controller/consolidados";
+import { consolidadosController } from "./api/consolidados/controller/consolidados";
 
 (async () => {
-  await client.connect();
+  await mongoose.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true,
+    connectTimeoutMS: 10000,
+  });
+
   const application = new App([consolidadosController]);
   const server = createServer(application.app);
   server.listen(process.env.PORT);
