@@ -1,0 +1,13 @@
+/sales:
+  get:
+    description: This route is responsible for fetching the dates and values in the database and returning it to the user.
+    responses:
+      200:
+        description: Successful request
+  post:
+    description: This route is responsible for triggering the integration between Pipedrive and Bling.
+    responses:
+      200:
+        description: Successful request, it searched for all the cases with "won" state on PIpedrive and brought to Bling as Orders.
+      500:
+        description: The request failed, it didn't managed to connect to Pipedrive.

@@ -5,6 +5,12 @@
   "main": "index.js",
   "repository": "https://github.com/eded1263/teste-linkapi.git",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/index.js",
+    "lint": "eslint",
+    "build": "babel src -d dist",
+    "start": "node dist/index.js"
+  },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.17.2",
@@ -16,13 +22,9 @@
     "mongoose": "^6.0.4",
     "morgan": "^1.10.0",
     "pipedrive": "^11.0.0",
-    "regenerator-runtime": "^0.13.9"
-  },
-  "scripts": {
-    "dev": "nodemon --exec babel-node src/index.js",
-    "lint": "eslint",
-    "build": "babel src -d dist",
-    "start": "node dist/index.js"
+    "regenerator-runtime": "^0.13.9",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

@@ -1,5 +1,8 @@
 import express from "express";
 import morgan from "morgan";
+import swaggerUiExpress from "swagger-ui-express";
+import { docsConfiguration } from "./config/docs";
+
 export class App {
   app = express();
 
@@ -11,6 +14,11 @@ export class App {
 
   initializeMiddlewares() {
     this.app.use(morgan("dev"));
+    this.app.use(
+      "/api-docs",
+      swaggerUiExpress.serve,
+      swaggerUiExpress.setup(docsConfiguration)
+    );
   }
 
   initializeControllers(controllers) {

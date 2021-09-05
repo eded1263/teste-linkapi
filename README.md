@@ -10,8 +10,10 @@ Para iniciar o projeto:
 
 Para lint: ```npm run lint```
 
+A rota ```/api-docs``` contem informações detalhadas nas rotas da API, bem como um sistema para testá-las.
 
 Tecnologias utilizadas:
 - NodeJS
 - Express
 - Mongoose
+- Swagger (para documentação)
