@@ -14,3 +14,4 @@ Para lint: ```npm run lint```
 Tecnologias utilizadas:
 - NodeJS
 - Express
+- Mongoose

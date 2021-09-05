@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { pipedriveService } from "~/src/services/pipedrive";
-import { SalesModel } from "../../../models/consolidado.model";
+import { SalesModel } from "../../../models/sales.model";
 import { blingService } from "../../../services/bling";
 import { orderParser } from "../../../utils/orderParser";
-class ConsolidadosController {
+class SalesController {
   router = Router();
 
   constructor() {
@@ -11,16 +11,16 @@ class ConsolidadosController {
   }
 
   initializeRoutes() {
-    this.router.get("/consolidados", this.getConsolidados);
-    this.router.post("/consolidados", this.postConsolidados);
+    this.router.get("/sales", this.getSales);
+    this.router.post("/sales", this.postSales);
   }
 
-  async getConsolidados(_req, res) {
-    const orders = await SalesModel.find();
+  async getSales(_req, res) {
+    const orders = await SalesModel.find().select("data total_sales");
     res.json(orders);
   }
 
-  async postConsolidados(_req, res) {
+  async postSales(_req, res) {
     let deals;
     try {
       deals = await pipedriveService.getAllWonDeals();
@@ -79,4 +79,4 @@ class ConsolidadosController {
   }
 }
 
-export const consolidadosController = new ConsolidadosController();
+export const salesController = new SalesController();

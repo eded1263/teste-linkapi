@@ -4,7 +4,7 @@ import "./config/dotenv";
 import mongoose from "mongoose";
 import { App } from "./App";
 import { createServer } from "http";
-import { consolidadosController } from "./api/consolidados/controller/consolidados";
+import { salesController } from "./api/sales/controller/sales";
 
 (async () => {
   await mongoose.connect(process.env.MONGO_URL, {
@@ -12,7 +12,7 @@ import { consolidadosController } from "./api/consolidados/controller/consolidad
     connectTimeoutMS: 10000,
   });
 
-  const application = new App([consolidadosController]);
+  const application = new App([salesController]);
   const server = createServer(application.app);
   server.listen(process.env.PORT);
   server.on("listening", () => {
